@@ -13,6 +13,7 @@
   - Italic (`*italic*`)
   - Underline (`__underline__`)
   - Ordered and unordered lists (`1. Item`, `- Bullet`)
+  - Block quotes (`> Quote`)
 - **RTF output**: Generates a valid RTF string that can be saved to a file or rendered in controls like `RichTextBox`.
 
 
@@ -84,7 +85,6 @@ Output RTF (simplified for readability):
 - Nested lists
 - Clickable links
 - Images
-- Block quotes
 - Code blocks
 - Horizontal rules
 - Tables
