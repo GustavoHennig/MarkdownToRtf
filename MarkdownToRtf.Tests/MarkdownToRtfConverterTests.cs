@@ -195,5 +195,19 @@ namespace MarkdownToRtf.Tests
             Assert.Contains(@"\fs28", rtf);
 
         }
+
+        [Fact]
+        public void Convert_BlockQuote_AddsIndent()
+        {
+            // Arrange
+            string markdown = "> quoted";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+            Assert.Contains(@"\li300", rtf);
+            Assert.Contains("quoted", rtf);
+        }
     }
 }

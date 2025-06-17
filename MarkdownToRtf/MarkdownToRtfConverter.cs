@@ -31,28 +31,7 @@ namespace MarkdownToRtf
             // 3) Walk the document blocks
             foreach (var block in document)
             {
-                switch (block)
-                {
-                    case HeadingBlock headingBlock:
-                        ConvertHeadingBlock(rtfBuilder, headingBlock);
-                        break;
-
-                    case ParagraphBlock paragraphBlock:
-                        ConvertParagraphBlock(rtfBuilder, paragraphBlock);
-                        break;
-
-                    case ListBlock listBlock:
-                        ConvertListBlock(rtfBuilder, listBlock);
-                        break;
-
-                    case ThematicBreakBlock thematicBreakBlock:
-                        ConvertThematicBreakBlock(rtfBuilder, thematicBreakBlock);
-                        break;
-
-                    default:
-                        // Unhandled block type; extend as needed
-                        break;
-                }
+                ConvertBlock(rtfBuilder, block);
             }
 
             // Close the RTF document
@@ -142,6 +121,59 @@ namespace MarkdownToRtf
         private static void ConvertThematicBreakBlock(StringBuilder rtf, ThematicBreakBlock hrBlock)
         {
             rtf.AppendLine(@"\pard\brdrb\brdrs\brdrw10\brsp20\par");
+        }
+
+        /// <summary>
+        /// Dispatches block conversion so it can be called recursively.
+        /// </summary>
+        private static void ConvertBlock(StringBuilder rtf, Block block)
+        {
+            switch (block)
+            {
+                case HeadingBlock headingBlock:
+                    ConvertHeadingBlock(rtf, headingBlock);
+                    break;
+
+                case ParagraphBlock paragraphBlock:
+                    ConvertParagraphBlock(rtf, paragraphBlock);
+                    break;
+
+                case ListBlock listBlock:
+                    ConvertListBlock(rtf, listBlock);
+                    break;
+
+                case ThematicBreakBlock thematicBreakBlock:
+                    ConvertThematicBreakBlock(rtf, thematicBreakBlock);
+                    break;
+
+                case QuoteBlock quoteBlock:
+                    ConvertQuoteBlock(rtf, quoteBlock);
+                    break;
+
+                default:
+                    // Unhandled block type; extend as needed
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Handles block quotes.
+        /// </summary>
+        private static void ConvertQuoteBlock(StringBuilder rtf, QuoteBlock quoteBlock)
+        {
+            foreach (var subBlock in quoteBlock)
+            {
+                if (subBlock is ParagraphBlock paragraph)
+                {
+                    rtf.Append(@"\pard\li300\sa180\fs20 ");
+                    ConvertInline(rtf, paragraph.Inline);
+                    rtf.AppendLine(@"\par");
+                }
+                else
+                {
+                    ConvertBlock(rtf, subBlock);
+                }
+            }
         }
 
         /// <summary>
