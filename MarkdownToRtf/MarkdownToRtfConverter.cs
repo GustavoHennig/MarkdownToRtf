@@ -45,6 +45,10 @@ namespace MarkdownToRtf
                         ConvertListBlock(rtfBuilder, listBlock);
                         break;
 
+                    case ThematicBreakBlock thematicBreakBlock:
+                        ConvertThematicBreakBlock(rtfBuilder, thematicBreakBlock);
+                        break;
+
                     default:
                         // Unhandled block type; extend as needed
                         break;
@@ -130,6 +134,14 @@ namespace MarkdownToRtf
                     rtf.AppendLine(@"\par");
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles thematic breaks (horizontal rules) like '---'.
+        /// </summary>
+        private static void ConvertThematicBreakBlock(StringBuilder rtf, ThematicBreakBlock hrBlock)
+        {
+            rtf.AppendLine(@"\pard\brdrb\brdrs\brdrw10\brsp20\par");
         }
 
         /// <summary>

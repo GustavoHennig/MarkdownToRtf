@@ -79,6 +79,16 @@ Output RTF (simplified for readability):
 - .NET 6 or higher (check the csproj)
 - [Markdig](https://github.com/xoofx/markdig) (Markdown parser)
 
+## Planned Features
+
+- Nested lists
+- Clickable links
+- Images
+- Block quotes
+- Code blocks
+- Horizontal rules
+- Tables
+
 
 
 ## License

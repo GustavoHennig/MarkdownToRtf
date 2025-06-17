@@ -129,6 +129,20 @@ namespace MarkdownToRtf.Tests
         }
 
         [Fact]
+        public void Convert_HorizontalRule_IncludesRtfBorder()
+        {
+            // Arrange
+            string markdown = "---";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+
+            Assert.Contains(@"\brdrb", rtf);
+        }
+  
+          [Fact]
         public void Convert_CodeInline_UsesMonospaceFont()
         {
             // Arrange
@@ -138,6 +152,7 @@ namespace MarkdownToRtf.Tests
             string rtf = MarkdownToRtfConverter.Convert(markdown);
 
             // Assert
+
             Assert.Contains(@"\f1 code\f0", rtf);
         }
 
@@ -178,6 +193,7 @@ namespace MarkdownToRtf.Tests
 
             // Assert - heading level 2 maps to \fs28
             Assert.Contains(@"\fs28", rtf);
+
         }
     }
 }
