@@ -127,5 +127,18 @@ namespace MarkdownToRtf.Tests
             // The converter should escape them (\\, \{, \})
             Assert.Contains(@"Special chars: \\ \{ \}", rtf);
         }
+
+        [Fact]
+        public void Convert_HorizontalRule_IncludesRtfBorder()
+        {
+            // Arrange
+            string markdown = "---";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+            Assert.Contains(@"\brdrb", rtf);
+        }
     }
 }
