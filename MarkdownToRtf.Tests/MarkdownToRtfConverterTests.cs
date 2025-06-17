@@ -127,5 +127,57 @@ namespace MarkdownToRtf.Tests
             // The converter should escape them (\\, \{, \})
             Assert.Contains(@"Special chars: \\ \{ \}", rtf);
         }
+
+        [Fact]
+        public void Convert_CodeInline_UsesMonospaceFont()
+        {
+            // Arrange
+            string markdown = "Example with `code` inline.";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+            Assert.Contains(@"\f1 code\f0", rtf);
+        }
+
+        [Fact]
+        public void Convert_Link_IncludesUnderline()
+        {
+            // Arrange
+            string markdown = "See [link](https://example.com) here.";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+            Assert.Contains(@"\ul https://example.com\ulnone", rtf);
+        }
+
+        [Fact]
+        public void Convert_LineBreak_AddsRtfLine()
+        {
+            // Arrange - two spaces before newline forces a line break
+            string markdown = "Line1  \nLine2";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert
+            Assert.Contains(@"\line", rtf);
+        }
+
+        [Fact]
+        public void Convert_Heading2_UsesSmallerFont()
+        {
+            // Arrange
+            string markdown = "## Second Level";
+
+            // Act
+            string rtf = MarkdownToRtfConverter.Convert(markdown);
+
+            // Assert - heading level 2 maps to \fs28
+            Assert.Contains(@"\fs28", rtf);
+        }
     }
 }
